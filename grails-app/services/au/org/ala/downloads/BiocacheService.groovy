@@ -86,7 +86,7 @@ class BiocacheService {
 
         fields.each { field ->
 
-            if (field && ((field?.dwcTerm && !(!includeRaw && field.dwcTerm.contains("_raw"))) || (((grailsApplication.config.downloads.customOnlyIncludeDwC?:'true') == 'false') && !(!includeRaw && field.name.contains("_raw"))))) {
+            if (field && ((field?.dwcTerm && !(!includeRaw && field.dwcTerm.contains("_raw"))) || ((!(grailsApplication.config.downloads.customOnlyIncludeDwC?:'true').toBoolean()) && !(!includeRaw && field.name.contains("_raw"))))) {
                 // only includes "_raw" fields when 'includeRaw' is true
                 String classsName = field?.classs ?: "Misc"
                 String key = classLookup.get(classsName) ?: "Misc"
