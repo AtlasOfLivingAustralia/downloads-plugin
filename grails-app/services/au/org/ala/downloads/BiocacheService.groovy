@@ -58,7 +58,7 @@ class BiocacheService {
             throw new RuntimeException(msg)
         }
 
-        fields
+        fields.findAll({ !getExcludedFields().contains(it.name) })
     }
 
     @Cacheable('longTermCache')
@@ -113,7 +113,8 @@ class BiocacheService {
             fields.addAll(fieldsMap.get(it))
         }
 
-        grailsApplication.config.downloads.uidField + ',' + orderFieldsByDwC(fields).join(",") // comma-separated string
+        String extraFields = grailsApplication.config.getProperty('downloads.dwcExtraFields', String, "")
+        ((extraFields != "") ? extraFields + ',' : "") + orderFieldsByDwC(fields).join(",") // comma-separated string
     }
 
     /**
@@ -142,7 +143,7 @@ class BiocacheService {
 
         List remainingFields = CollectionUtils.subtract(fields, orderedFields) // get the "remaining" list of fields
         orderedFields.addAll(remainingFields.sort()) // sort remainingFields and append to orderedFields
-        List outputFields = orderedFields.collect { it.downloadName } // flatten to just list of fields
+        List outputFields = orderedFields.findAll {it.downloadName != null}.collect { it.downloadName } // flatten to just list of fields
 
         outputFields
     }
@@ -173,5 +174,10 @@ class BiocacheService {
         }
 
         dwcFieldsOrdered
+    }
+
+    List getExcludedFields() {
+        String excludedFields = grailsApplication.config.downloads.excludeFields?: ""
+        excludedFields.split(",")
     }
 }

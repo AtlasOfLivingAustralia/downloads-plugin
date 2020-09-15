@@ -44,12 +44,15 @@ class DownloadController {
         log.debug "downloadParams = ${downloadParams.toString()}"
         downloadParams.file = DownloadType.RECORDS.type + "-" + new Date().format("yyyy-MM-dd")
 
+        boolean askForEmail = (authService?.getEmail() == null);
+
         if (downloadParams.searchParams) {
             render (view:'options1', model: [
                     searchParams: downloadParams.searchParams,
                     targetUri: downloadParams.targetUri,
                     filename: downloadParams.file,
                     totalRecords: downloadParams.totalRecords,
+                    askForEmail: askForEmail,
                     defaults: [ sourceTypeId: downloadParams.sourceTypeId,
                                 downloadType: downloadParams.downloadType,
                                 downloadFormat: downloadParams.downloadFormat,
@@ -83,8 +86,12 @@ class DownloadController {
             // Customise download screen
             Map sectionsMap = biocacheService.getFieldsMap()
             log.debug "sectionsMap = ${sectionsMap as JSON}"
-            Map customSections = grailsApplication.config.downloads.customSections.clone()
-
+            Map customSections = grailsApplication.config.getRequiredProperty("downloads.customSections", Map).clone()
+            // work-around for mixing groovy and property files for config values see issue #53
+            List miscItems = grailsApplication.config.getProperty("downloads.customSections.misc", List, [])
+            if (miscItems) {
+                customSections.misc = miscItems  // replace with sanitised version via getProperty()
+            }
             //add preselected layer selection to "SPATIAL INTERSECTIONS"
             def mandatory = grailsApplication.config.downloads.mandatoryFields.clone()
             if (downloadParams.layers) {

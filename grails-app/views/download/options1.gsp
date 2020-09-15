@@ -29,6 +29,7 @@
     <title><g:message code="download.page.title"/></title>
     <asset:javascript src="downloads.js" />
     <asset:stylesheet src="downloads.css" />
+
 </head>
 
 <body>
@@ -44,16 +45,15 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <strong>
                 <g:if test="${showLongTimeWarning}">
-                    Your search returned ${g.formatNumber(number: totalRecords, format: "#,###,###")} results and may take more than 24 hours to run.
+                    <g:message code="download.show.long.time.warning" args="[ g.formatNumber(number: totalRecords, format: '#,###,###') ]"/>
                 </g:if>
                 <g:if test="${showLongTimeWarning && grailsApplication.config.downloads.staticDownloadsUrl}">
                     <br/>
                 </g:if>
                 <g:if test="${grailsApplication.config.downloads.staticDownloadsUrl}">
-                    Did you know the ${grailsApplication.config.skin.orgNameLong} provides a number of pre-generated downloads for common search queries
-                    (e.g. all plants, mammals, birds, insects, etc.)?
+                    <g:message code="download.pre.generated.text" args="[ grailsApplication.config.skin.orgNameLong ]"/>
                     <a href="${grailsApplication.config.downloads.staticDownloadsUrl?:'http://downloads.ala.org.au'}" target="_blank">
-                        View all pre-generated downloads.
+                        <g:message code="download.pre.generated.view"/>
                     </a>
                 </g:if>
             </strong>
@@ -92,7 +92,7 @@
                                     <p>
                                         <g:message code="download.occurrence.records.zip" />
                                     </p>
-                                    <form id="downloadFormatForm" class="form-horizontal collapse">
+                                    <form id="downloadFormatForm" class="form-horizontal collapse" style="height:auto">
                                         <div class="form-group">
                                             <label for="file" class="control-label col-sm-4"><g:message code="download.occurrence.records.filename" /></label>
                                             <div class="col-sm-8">
@@ -104,7 +104,7 @@
                                         <div class="form-group">
                                             <label for="downloadFormat" class="control-label col-sm-4">
                                                 <span class="color--mellow-red" style="font-size:18px">*</span>
-                                                Download format
+                                                <g:message code="download.occurrence.records.download.format" />
                                             </label>
                                             <div class="col-sm-8 radio">
                                                 <g:each in="${au.org.ala.downloads.DownloadFormat.values()}" var="df">
@@ -116,19 +116,21 @@
                                                         </label>
                                                     </div>
                                                 </g:each>
-                                                <p class="help-block collapse"><strong>This field is mandatory.</strong></p>
+                                                <p class="help-block collapse"><strong><g:message code="download.field.mandatory" /></strong></p>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label class="control-label col-sm-4">
                                                 <span class="color--mellow-red" style="font-size:18px">*</span>
-                                                Output file format
+                                                <g:message code="download.occurrence.records.output.format"/>
                                             </label>
                                             <div class="col-sm-8 radio">
                                                 <g:each in="${au.org.ala.downloads.FileType.values()}" var="ft">
 %{--                                                %{-- Skip Shapefile type --}%
-                                                    <g:if test="${!(grailsApplication.config.getProperty("filetype.shapefile.disable", boolean) && ft.type == au.org.ala.downloads.FileType.SHAPE.type )}">
+                                                    <g:if test="${!((grailsApplication.config.getProperty("filetype.shapefile.disable", boolean) ||
+                                                                     grailsApplication.config.getProperty("filetype.shapefile.hidden", boolean)) &&
+                                                                     ft.type == au.org.ala.downloads.FileType.SHAPE.type )}">
                                                         <div class="">
                                                             <label>
                                                                 <input id="fileType_${ft.type}" type="radio" name="fileType" class=""
@@ -139,7 +141,7 @@
                                                         </div>
                                                     </g:if>
                                                 </g:each>
-                                                <g:if test="${grailsApplication.config.getProperty("filetype.shapefile.disable", boolean)}">
+                                                <g:if test="${grailsApplication.config.getProperty("filetype.shapefile.disable", boolean) && !grailsApplication.config.getProperty("filetype.shapefile.hidden", boolean)}">
                                                     %{-- Indicate shapefile is deprecated and will be removed --}%
                                                     <div class="">
                                                         <label>
@@ -157,7 +159,7 @@
                                     <a href="#" id="select-${au.org.ala.downloads.DownloadType.RECORDS.type}"
                                        class="select-download-type btn btn-white btn-lg btn-block margin-top-1 margin-bottom-1 font-xxsmall"
                                        type="button">
-                                        <i class="glyphicon glyphicon-ok" style="display: none;"></i><span>Select</span>
+                                        <i class="glyphicon glyphicon-ok" style="display: none;"></i><span><g:message code="download.select"/></span>
                                     </a>
                                 </div><!-- End col-md-3 -->
                                 <hr class="visible-xs"/>
@@ -177,11 +179,10 @@
                                     </div>
 
                                     <div class="col-md-7">
-                                        <h4 class="text-uppercase=heading-underlined">Species checklist</h4>
+                                        <h4 class="text-uppercase=heading-underlined"><g:message code="download.species.checklist"/></h4>
 
                                         <p class="font-xsmall">
-                                            A comma separated values (CSV) file, listing the distinct species in the occurrence records
-                                            result set.
+                                            <g:message code="download.species.checklist.text"/>
                                         </p>
                                     </div>
 
@@ -190,7 +191,7 @@
                                         <a href="#" id="select-${au.org.ala.downloads.DownloadType.CHECKLIST.type}"
                                            class="select-download-type btn btn-white btn-lg btn-block margin-top-1 margin-bottom-1 font-xxsmall"
                                            type="button">
-                                            <i class="glyphicon glyphicon-ok collapse"></i><span>Select</span>
+                                            <i class="glyphicon glyphicon-ok collapse"></i><span><g:message code="download.select"/></span>
                                         </a>
                                     </div><!-- End col-md-3 -->
                                     <hr class="visible-xs"/>
@@ -212,11 +213,10 @@
                                     </div>
 
                                     <div class="col-md-7">
-                                        <h4 class="text-uppercase=heading-underlined">Species field-guide</h4>
+                                        <h4 class="text-uppercase=heading-underlined"><g:message code="download.species.field.guide"/></h4>
 
                                         <p>
-                                            A PDF document containing species profile information (including photos and maps) for the
-                                            list of distinct species in the occurrence record set.
+                                            <g:message code="download.species.field.guide.text"/>
                                         </p>
                                     </div>
 
@@ -224,7 +224,7 @@
                                         <a href="#" id="select-${au.org.ala.downloads.DownloadType.FIELDGUIDE.type}"
                                            class="select-download-type btn btn-white btn-lg btn-block margin-top-1 margin-bottom-1 font-xxsmall"
                                            type="button">
-                                            <i class="glyphicon glyphicon-ok" style="display: none;"></i><span>Select</span>
+                                            <i class="glyphicon glyphicon-ok" style="display: none;"></i><span><g:message code="download.select"/></span>
                                         </a>
                                     </div><!-- End col-md-3 -->
                                 </div><!-- End row -->
@@ -243,13 +243,43 @@
                         <div class="comment-wrapper push">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <h4 class="heading-medium-alt">Step 2</h4>
+                                    <h4 class="heading-medium-alt"><g:message code="download.step2"/></h4>
                                 </div>
 
                                 <div class="col-md-10">
-                                    <p>Select your download reason and then click the "Next" button.</p>
+                                    <p><g:message code="download.select.reason.type"/></p>
                                 </div>
                             </div>
+
+                            <g:if test="${askForEmail}">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="contrib-stats">
+                                        <div class="no-of-questions">
+                                            <div class="survey-details">
+                                                <div class="survey-counter"><strong><i
+                                                        class="fa fa-at color--yellow"></i></strong></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-7">
+                                    <form class="form-inline margin-top-1">
+                                        <div class="form-group">
+                                            <label for="downloadEmail" class="control-label heading-xsmall"><span
+                                                    class="color--mellow-red">*</span><g:message code="download.email"/></label>&nbsp;&nbsp;
+                                            <input type="email" class="form-control" name="downloadEmail" id="downloadEmail"/>
+                                            <p class="help-block"><strong><g:message code="download.field.mandatory"/></strong> <g:message code="download.enter.email.to.receive"/>
+                                            </p>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="col-md-3">
+                                </div>
+                            </div>
+                            </g:if>
 
                             <div class="row">
                                 <div class="col-md-2">
@@ -267,14 +297,14 @@
                                     <form class="form-inline margin-top-1">
                                         <div class="form-group">
                                             <label for="downloadReason" class="control-label heading-xsmall"><span
-                                                    class="color--mellow-red">*</span>Industry/application</label>&nbsp;&nbsp;
+                                                    class="color--mellow-red">*</span><g:message code="download.reason"/></label>&nbsp;&nbsp;
                                             <select class="form-control" id="downloadReason">
-                                                <option value="" disabled selected>Select a reason ...</option>
+                                                <option value="" disabled selected><g:message code="download.reason.placeholder"/></option>
                                                 <g:each var="it" in="${downloads.getLoggerReasons()}">
-                                                    <option value="${it.id}">${it.name}</option>
+                                                    <option value="${it.id}"><g:message code="download.reason.type${it.id}" default="${it.name}"/></option>
                                                 </g:each>
                                             </select>
-                                            <p class="help-block"><strong>This field is mandatory.</strong> Choose the best "use type" from the drop-down menu above.
+                                            <p class="help-block"><strong><g:message code="download.field.mandatory"/></strong> <g:message code="download.choose.best.use.type"/>
                                             </p>
                                         </div>
                                     </form>
@@ -283,20 +313,20 @@
                                 <div class="col-md-3">
                                     <a href="#" id="nextBtn"
                                        class="btn btn-lg btn-primary btn-bs3 btn-block margin-top-1 margin-bottom-1 font-xxsmall"
-                                       type="button">Next <i class="fa fa-chevron-right color--white"></i></a>
+                                       type="button"><g:message code="download.next"/> <i class="fa fa-chevron-right color--white"></i></a>
                                 </div><!-- End col-md-3 -->
                             </div>
 
                             <div class="row">
                                 <div class="col-md-12">
                                     <!-- Alert Information -->
-                                    <div id="errorAlert" class="alert alert-danger alert-dismissible collapse" role="alert">
+                                    <div id="errorAlert" class="alert alert-danger alert-dismissible collapse" role="alert" style="height:fit-content">
                                         <button type="button" class="close" onclick="$(this).parent().hide()"
                                                 aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <strong>Error:</strong> Ensure that you 1) select your download <b>type</b><span
-                                            id="errorFormat" class="collapse">and select a download <b>format</b>
-                                    </span>, 2) select a download <b>reason</b>
-
+                                        <strong><g:message code="download.error"/>:</strong>
+                                        <div id="errorType" class="collapse" style="height:auto"><g:message code="download.error.please.select.type"/></div>
+                                        <div id="errorEmail" class="collapse" style="height:auto"><g:message code="download.error.please.select.email"/></div>
+                                        <div id="errorReason" class="collapse" style="height:auto"><g:message code="download.error.please.select.reason"/></div>
                                     </div>
                                     <!-- End Alert Information -->
                                 </div>
@@ -318,6 +348,9 @@
 </div><!-- /.row-fuid  -->
 <g:javascript>
     $( document ).ready(function() {
+
+        var askForEmail = ${askForEmail};
+
         // click event on download type select buttons
         $('a.select-download-type').click(function(e) {
             e.preventDefault(); // its a link so stop any regular link stuff happening
@@ -334,25 +367,25 @@
                     // show type options
                     $('#downloadFormatForm').slideUp();
                 }
-            } else {
+            }
+            else {
                 // not selected
-                $('a.select-download-type').find('span').text('Select'); // reset any other selected buttons
+                $('a.select-download-type').find('span').text('<g:message code="download.select"/>'); // reset any other selected buttons
                 $('a.select-download-type').removeClass('btn-success'); // reset any other selected buttons
                 $('a.select-download-type').addClass('btn-white'); // reset any other selected buttons
                 $('a.select-download-type').find('.glyphicon').hide(); // reset any other selected buttons
-                $(link).find('span').text('Selected');
+                $(link).find('span').text('<g:message code="download.selected"/>');
                 $(link).removeClass('btn-white');
                 $(link).addClass('btn-success');
                 $(link).find('.glyphicon').show();
                 $(link).blur(); // prevent BS focus
-                //console.log('link id', $(link).attr('id'), "select-${au.org.ala.downloads.DownloadType.RECORDS.type}");
 
                 if ($(link).attr('id') == "select-${au.org.ala.downloads.DownloadType.RECORDS.type}") {
                     // show type options
                     $('#downloadFormatForm').slideDown();
                 } else {
                     $('#downloadFormatForm').slideUp();
-                    $('#downloadReason').focus();
+                    $(askForEmail ? '#downloadEmail' : '#downloadReason').focus();
                 }
             }
         });
@@ -363,29 +396,21 @@
 
         // download format change event
         $('#downloadFormat').on('change', function(e) {
-            //console.log('this selected val', $(this).find(":selected").val());
             if ($(this).find(":selected").val()) {
-                // set focus on reason code
-                $('#downloadReason').focus();
+                // set focus on email or reason code
+                $(askForEmail ? '#downloadEmail' : '#downloadReason').focus();
             }
         });
 
         if (${defaults?.downloadFormat != null}) {
-            //$('#downloadFormat')[0].value = '${defaults?.downloadFormat}';
             $('input[name=downloadFormat]:checked').val(${defaults?.downloadFormat});
-        }
-
-        if (${defaults?.fileType != null}) {
-            //$('#fileType')[0].value = '${defaults?.fileType}';
-            //$('input[name=fileType]:checked').val(${defaults?.downloadFormat});
         }
 
         // file type change event
         $('#fileType').on('change', function(e) {
-            //console.log('this selected val', $(this).find(":selected").val());
             if ($(this).find(":selected").val()) {
-                // set focus on reason code
-                $('#downloadReason').focus();
+                // set focus on email or reason code
+                $(askForEmail ? '#downloadEmail' : '#downloadReason').focus();
             }
         });
 
@@ -394,43 +419,45 @@
             e.preventDefault();
             // do form validation
             var type = $('.select-download-type.btn-success').attr('id');
-            //var format = $('#downloadFormat').find(":selected").val();
             var format = $('input[name=downloadFormat]:checked').val();
+            var email = askForEmail ? $('input[name=downloadEmail]').val() : "";
             var reason = $('#downloadReason').find(":selected").val();
             var file = $('#file').val();
-            //alert("format = " + format);
-            if (type) {
-                type = type.replace(/^select-/,''); // remove prefix
-                $('#errorAlert').hide();
 
-                if (type == "${au.org.ala.downloads.DownloadType.RECORDS.type}") {
-                    // check for format
-                    if (!format) {
-                        $('#downloadFormat').focus();
-                        $('#errorAlert').show();
-                        $('#errorFormat').show();
-                        return false;
-                    } else {
-                        $('#errorFormat').hide();
-                        $('#errorAlert').hide();
-                    }
-                }
+            var hasAlert = false;
+            $('#errorType').hide();
+            $('#errorEmail').hide();
+            $('#errorReason').hide();
 
-                if (!reason) {
-                    $('#errorAlert').show();
-                    $('#downloadReason').focus();
-                } else {
-                    // go to next screen
-                    $('#errorAlert').hide();
-                    var sourceTypeId = "${downloads.getSourceId()}";
-                    var layers = "${defaults.layers}";
-                    var layersServiceUrl = "${defaults.layersServiceUrl}";
-                    var customHeader = "${defaults.customHeader}";
-                    var fileType = $('input[name=fileType]:checked').val();
-                    window.location = "${g.createLink(action: 'options2')}?searchParams=${searchParams.encodeAsURL()}&targetUri=${targetUri.encodeAsURL()}&downloadType=" + type + "&reasonTypeId=" + reason + "&sourceTypeId=" + sourceTypeId + "&downloadFormat=" + format + "&file=" + file + "&layers=" + layers + "&customHeader=" + customHeader + "&fileType=" + fileType + "&layersServiceUrl=" + layersServiceUrl;
-                }
-            } else {
+            if (!type) {
+                $('#errorType').show();
+                hasAlert = true;
+            }
+            if (askForEmail && !email) {
+                $('#errorEmail').show();
+                $('#downloadEmail').focus();
+                hasAlert = true;
+            }
+            if (!reason) {
+                $('#errorReason').show();
+                $('#downloadReason').focus();
+                hasAlert = true;
+            }
+
+            if (hasAlert) {
                 $('#errorAlert').show();
+            }
+            else {
+                $('#errorAlert').hide();
+                type = type.replace(/^select-/,''); // remove prefix
+
+                // go to next screen
+                var sourceTypeId = "${downloads.getSourceId()}";
+                var layers = "${defaults.layers}";
+                var layersServiceUrl = "${defaults.layersServiceUrl}";
+                var customHeader = "${defaults.customHeader}";
+                var fileType = $('input[name=fileType]:checked').val();
+                window.location = "${g.createLink(action: 'options2')}?searchParams=${searchParams.encodeAsURL()}&targetUri=${targetUri.encodeAsURL()}&downloadType=" + type + "&reasonTypeId=" + reason + "&sourceTypeId=" + sourceTypeId + "&downloadFormat=" + format + "&file=" + file + "&layers=" + layers + "&customHeader=" + customHeader + "&fileType=" + fileType + "&layersServiceUrl=" + layersServiceUrl;
             }
         });
 
@@ -444,7 +471,8 @@
             trigger: 'hover',
             placement: 'top',
             delay: { show: 100, hide: 2500 },
-            html: true
+            html: true,
+            container: 'body',
         });
 
         $(document).on('show.bs.popover', function (e) {

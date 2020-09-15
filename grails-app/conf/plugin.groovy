@@ -61,7 +61,7 @@ downloads {
         taxon = "classs:Taxon"
         measurementOrFact = "classs:MeasurementOrFact"
         conservationStatus = ".*Conservation"
-        otherTraits = "species_group|species_subgroup"
+        otherTraits = "species_group%7cspecies_subgroup"
         environmentalLayers = "name:el[0-9]*"
         contextualLayers = "name:cl[0-9]*"
         qualityAssertions = "assertion"
@@ -81,18 +81,21 @@ downloads.legacy.defaultFields = "id,data_resource_uid,data_resource,license,cat
 downloads.mandatoryFields = ["recordLevelTerms","occurrence"]
 downloads.excludeFields = ""
 downloads.uidField = "row_key" // It was "uuid" for biocache 1.9.x
+downloads.dwcExtraFields = "data_resource_uid"
 
 downloads.fieldguide.species.max = 1000
-downloads.maxRecords = 1000000
+downloads.maxRecords = 10000000
 downloads.staticDownloadsUrl = "https://downloads.ala.org.au"
 downloads.dwcSchemaUrl = "https://raw.githubusercontent.com/tdwg/dwc/master/xsd/tdwg_dwcterms.xsd"
 downloads.termsOfUseUrl = "https://www.ala.org.au/about-the-atlas/terms-of-use/#TOUusingcontent"
 downloads.defaultDownloadFormat = "dwc"
 downloads.includeRawDwcFields = "true" // keep it a string to be consistent with properties file
 downloads.gaCustomData = true  // Google Analytics custom dimensions data - set to empty for non-ALA installations
+downloads.refresh.confirm.maxTimeout = 20
 
 doiService.baseUrl = "https://doi.ala.org.au"
 doiService.doiResolverUrl = "https://doi.org/"
 
 filetype.shapefile.disable = true // set to false, to revert to previous behaviour - will probably/eventually be deprecated in biocache-service
+filetype.shapefile.hidden = false
 shapefile.kb.url = "https://support.ala.org.au/support/solutions/articles/6000226357"

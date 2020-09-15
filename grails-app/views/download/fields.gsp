@@ -101,6 +101,7 @@
                     <th><g:message code="downloads.fields.dwc.class" default="DwC class"/></th>
                     <th><g:message code="downloads.fields.description" default="Description"/></th>
                     <th><g:message code="downloads.fields.download.description" default="Download description"/></th>
+                    <th><g:message code="downloads.fields.furtherinformation" default="Further information"/></th>
                     <th><g:message code="downloads.fields.attributes" default="Attributes"/></th>
                 </tr>
             </thead>
@@ -114,6 +115,11 @@
                     <td>${fld.classs}</td>
                     <td>${fld.description}</td>
                     <td>${fld.downloadDescription}</td>
+                    <td>
+                    <g:if test="${fld.infoUrl}">
+                        <a href="${fld.infoUrl}" target="_blank">Wiki</a>
+                    </g:if>
+                    </td>
                     <td>
                         <g:if test="${fld.indexed}"><span class="label label-info tooltips" title="${message(code:"downloads.fields.tooltip.indexed")}">I</span></g:if>
                         <g:if test="${fld.stored}"><span class="label label-success tooltips" title="${message(code:"downloads.fields.tooltip.stored")}">S</span></g:if>

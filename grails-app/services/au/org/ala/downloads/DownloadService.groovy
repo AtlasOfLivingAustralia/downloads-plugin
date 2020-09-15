@@ -52,7 +52,7 @@ class DownloadService {
                 triggerOfflineDownload(downloadParams)
             } else if (downloadParams.downloadFormat == DownloadFormat.CUSTOM.format) {
                 // Custom download
-                List<String> customFields = [grailsApplication.config.downloads.uidField]
+                List<String> customFields = [grailsApplication.config.downloads.dwcExtraFields]
                 downloadParams.customClasses.each {
                     log.debug "classs = ${it}"
 
@@ -69,11 +69,14 @@ class DownloadService {
                         downloadParams.includeMisc = true
                     } else if (it == "selectedLayers") {
                         //already added to extra
+                    } else if (it =~ /^dr\d+/) {
+                        // species list DR
+                        downloadParams.extra = (downloadParams.extra) ? "${downloadParams.extra},${it}" : it
                     } else {
                         throw new Exception("Custom field class not recognised: ${it}")
                     }
                 }
-                downloadParams.fields = customFields.join(",")
+                downloadParams.fields = customFields.findAll({it != null && it != ""}).join(",")
                 triggerOfflineDownload(downloadParams)
             } else {
                 def msg = "Download records format not recognised: ${downloadParams.downloadFormat}"

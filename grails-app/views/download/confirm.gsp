@@ -47,7 +47,7 @@
             margin-top: 2em;
         }
         textarea {
-            width: 100%;
+            width: 90%;
         }
         .progress {
             height: 12px;
@@ -91,15 +91,15 @@
                         </code>
                         <p>
                             <g:if test="${(isQueuedDownload || isFieldGuide) && json}">
-                                <g:message code="download.confirm.emailed" default="An email containing a link to the download file will be sent to your email address (linked to your ALA account) when it is completed."/>
-                                <div class="progress active hidden">
-                                    <div class="bar" style="width: 100%;"></div>
+                                <div class="progress active">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%;"></div>
                                 </div>
                                 <div id="queueStatus"></div>
+                                <p>&nbsp;</p>
+                                <g:message code="download.confirm.emailed" default="An email containing a link to the download file will be sent to your email address (linked to your ALA account) when it is completed."/>
                             </g:if>
                             <g:elseif test="${isFieldGuide && downloadUrl}">
                                 <button id="fieldguideBtn" class="btn btn-lg btn-success btn-block"><g:message code="download.confirm.newWindow" default="View the field guide (new window)"/></button>
-
                             </g:elseif>
                             <g:elseif test="${isChecklist && downloadUrl}">
                                 <g:message code="download.confirm.browser" default="Check your downloads folder or your browser's downloads window."/>
@@ -131,7 +131,7 @@
             <div class="modal-body">
                 <textarea id='requestUrl'>${json?.requestUrl}</textarea>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="text-align:center">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><g:message code="modal.close" default="Close"/></button>
                 <button id="copyBtn" class="btn btn-primary" data-clipboard-action="copy" data-clipboard-target="#requestUrl">Copy to clipboard</button>
             </div>
@@ -177,39 +177,58 @@
      *
      * @param json
      */
-    var maxTries = 1;
-    var tries = 0;
+
+    // Update status periodically, starting at 1 sec,
+    // doubling at each call with a limit to maxTimeout
+    var maxTimeout = ${grailsApplication.config.downloads.refresh.confirm.maxTimeout} * 1000;
+    var timeout = 1 * 1000;
 
     function updateStatus(json) {
-        //var timeout = 20 * 1000; // time between checks
-        //console.log("updateStatus", json);
-
-        if (json.status) {
-            if (json.statusUrl && maxTries > tries) {
-                tries++;
-
-                $('#queueStatus').html("Download is <span>" + json.status +"</span>");
-                $('.progress').addClass('progress-striped');
-
-                // setTimeout(function(){
-                    $.getJSON(json.statusUrl, function(data) {
-                        updateStatus(data);
-                    }).fail(function( jqxhr, textStatus, error ) {
-                        $('#queueStatus').html( "Request Failed: " + textStatus + ", " + error );
-                    });
-                // }, timeout);
-            } else if (json.downloadUrl) {
-                $('#queueStatus').html("<a class='btn btn-primary' href='" + json.downloadUrl + "'><i class='fa fa-download'></i> Download now</a>");
-                $('.progress').removeClass('progress-striped');
-                $('.progress').hide();
-                $('.lead').html("Your download is ready.");
-            } else if (json.status == "inQueue" || json.status == "running") {
-                $('#queueStatus').html(""); //ignore
-            } else {
-                $('#queueStatus').html("There was a problem getting the status: <code>" + json.message + "</code> (" + json.status + ")");
-                $('.progress').removeClass('progress-striped');
-            }
+        if (json.status == "inQueue" && json.statusUrl) {
+            $('.lead').html("<g:message code="download.confirm.queue"/>");
+            $('.progress').show();
+            reloadStatus(json.statusUrl);
         }
+        else if (json.status == "running" && json.statusUrl) {
+            $('.lead').html("<g:message code="download.confirm.running"/>");
+            $('.progress').show();
+            reloadStatus(json.statusUrl);
+        }
+        else if (json.status == "skipped") {
+            $('.lead').html("<g:message code="download.confirm.skipped"/>");
+            $('.progress').hide();
+        }
+        else if (json.status == "finished") {
+            $('.lead').html("<g:message code="download.confirm.finished"/>");
+            $('#queueStatus').html("<a class='btn btn-primary' href='" + json.downloadUrl + "'><i class='fa fa-download'></i> <g:message code="download.confirm.download.now"/></a>");
+            $('.progress').hide();
+        }
+        else {
+            // Error cases
+            $('.lead').html("<g:message code="download.confirm.failed"/>");
+            $('.progress').hide();
+            var errorMessage = "";
+            if (json.status) {
+                errorMessage = "status: <code>" + json.status + "</code><br/>";
+            }
+            if (json.message) {
+                errorMessage = errorMessage + "message: <code>" + json.message + "</code>";
+            }
+            $('#queueStatus').html(errorMessage);
+        }
+    }
+
+    function reloadStatus(url) {
+        setTimeout(function(){
+            $.getJSON(url, function(data) {
+                timeout = Math.min(timeout * 2, maxTimeout);
+                updateStatus(data);
+            }).fail(function( jqxhr, textStatus, error ) {
+                $('.lead').html("<g:message code="download.confirm.failed"/>");
+                $('.progress').hide();
+                $('#queueStatus').html("status: <code>"+textStatus+"</code><br/>message: <code>"+error+"</code>");
+            });
+        }, timeout);
     }
 
 </g:javascript>

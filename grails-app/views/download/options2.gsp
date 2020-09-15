@@ -48,17 +48,16 @@
 <body>
 <div class="row" id="customiseDownload">
     <div class="col-md-10 col-md-offset-1">
-        <h2 class="heading-medium">Customise Your Download</h2>
+        <h2 class="heading-medium"><g:message code="download.customize.title"/></h2>
         <g:set var="toolbar">
             <div class="button-toolbar row-fluid">
                 <div class="btn-group">
-                    <!-- <a class="btn btn-default" disabled="disabled" href="#"><span class="glyphicon glyphicon-th" aria-hidden="true"></span> <span class="hidden-xs hidden-sm">Toggle grid view</span></a> -->
-                    <a class="btn btn-default select-all-btn" href="#"><i class="fa fa-check"></i> <span class="hidden-xs">Select all</span></a>
-                    <a class="btn btn-default select-none-btn" href="#"><i class="fa fa-times"></i> <span class="hidden-xs">Unselect all</span></a>
+                    <a class="btn btn-default select-all-btn" href="#"><i class="fa fa-check"></i> <span class="hidden-xs"><g:message code="download.customize.select.all"/></span></a>
+                    <a class="btn btn-default select-none-btn" href="#"><i class="fa fa-times"></i> <span class="hidden-xs"><g:message code="download.customize.unselect.all"/></span></a>
                 </div>
                 <div class="btn-group pull-right">
-                    <a class="btn btn-default save-btn"><i class="fa fa-cog"></i> <span class="hidden-xs">Save preferences</span></a>
-                    <a class="btn btn-primary next-btn" href="#"><span class="hidden-xs">Next</span> <i class="fa fa-chevron-right color--white"></i></a>
+                    <a class="btn btn-default save-btn"><i class="fa fa-cog"></i> <span class="hidden-xs"><g:message code="download.customize.save.preferences"/></span></a>
+                    <a class="btn btn-primary next-btn" href="#"><span class="hidden-xs"><g:message code="download.customize.next"/></span> <i class="fa fa-chevron-right color--white"></i></a>
                 </div>
             </div>
         </g:set>
@@ -71,7 +70,6 @@
             <g:each in="${customSections}" var="section" status="s">
                 <div class="row ${(s > 0) ? "margin-top-1" : ""}">
                     <div class="col-md-12">
-                        %{--<div class="panel panel-default">--}%
                             <div class="comment-wrapper push">
                                 <div class="row">
                                     <div class="col-md-2 hidden-xs">
@@ -95,7 +93,7 @@
                                             <g:each in="${section.value}" var="group" status="i">
                                                 <g:set var="disabled" value="${(mandatoryFields.contains(group) || (section.key == 'SPATIAL INTERSECTION' && downloadParams?.layers)) ? true : false }"/>
                                                 <g:set var="active" value="${(mandatoryFields.contains(group) || userSavedFields.contains(group)) ? true : false }"/>
-                                                <a href="#" class="list-group-item ${(disabled)?"disabled":""} ${(active)?"list-group-item-success":""}" title="${(disabled)?"required item (cannot be de-selected)":""}">
+                                                <a href="#" class="list-group-item ${(disabled)?"disabled":""} ${(active)?"list-group-item-success":""}" title="${(disabled)?message(code: "download.customize.required.item.title", default: ""):""}">
                                                     <div class="checkbox pull-left">
                                                         <label><input type="checkbox" class="fieldClass" value="${group}" ${(disabled || active)?"checked='checked'":""}></label>
                                                     </div>
@@ -165,7 +163,6 @@
                 fields.push($(this).val());
             });
             queryString += '&customClasses=' +fields.join('&customClasses=');
-            //alert("queryString: " + queryString);
             window.location = "${g.createLink(action:'options2')}" + queryString;
         });
 
@@ -181,10 +178,10 @@
                 $.post("${g.createLink(action: 'saveUserPrefs')}?fields=" + fields.join("&fields="),
                                 { },
                                 function(data) {
-                                    bootbox.alert("Preferences saved.");
+                                    bootbox.alert("<g:message code="download.customize.preferences.saved"/>");
                                 }
                         ).error(function (request, status, error) {
-                                    bootbox.alert("Failed to save preferences.");
+                                    bootbox.alert("<g:message code="download.customize.preferences.failed"/>");
                                 });
             </g:if>
             <g:else>
