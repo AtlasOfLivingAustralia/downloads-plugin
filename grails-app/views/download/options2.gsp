@@ -43,6 +43,9 @@
             margin-top: 2em;
         }
 
+        .modal-footer button {
+            margin-right: 50px;
+        }
 </style>
 </head>
 <body>
