@@ -203,7 +203,8 @@ class DownloadsTagLib {
         if (filter && fields) {
             html =  "<a href='${g.createLink(action: action)}?filter=${filter}' target='_fields'>" +
                     g.message(code:"downloads.fields.group.${group}", default: group) +
-                    " (click for full list of fields)</a> which include: ${fields}"
+                    g.message(code:"downloads.taglib.list.fields", default: " (click for full list of fields)</a> which include: ") +
+                    "[${fields}]"
         } else {
             html = g.message(code:"downloads.fields.group.${group}", default: group)
         }
