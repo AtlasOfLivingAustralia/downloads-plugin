@@ -48,6 +48,7 @@
         }
         textarea {
             width: 100%;
+            height: 135px;
         }
         .progress {
             height: 12px;
@@ -133,7 +134,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><g:message code="modal.close" default="Close"/></button>
-                <button id="copyBtn" class="btn btn-primary" data-clipboard-action="copy" data-clipboard-target="#requestUrl">Copy to clipboard</button>
+                <button id="copyBtn" class="btn btn-primary" data-clipboard-action="copy" data-clipboard-target="#requestUrl"><g:message code="download.downloadUrl.copyToClipboard" default="Copy to clipboard"/></button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
