@@ -13,7 +13,7 @@
 
 package au.org.ala.downloads
 
-//import grails.plugin.cache.Cacheable
+import grails.plugin.cache.Cacheable
 import org.grails.web.util.WebUtils
 
 import java.text.SimpleDateFormat
@@ -130,7 +130,7 @@ class DownloadService {
      *
      * @return
      */
-    //@Cacheable('longTermCache')
+    @Cacheable('longTermCache')
     List getLoggerReasons() {
         def url = "${grailsApplication.config.logger.baseUrl}/logger/reasons"
         try {
@@ -146,7 +146,7 @@ class DownloadService {
      *
      * @return
      */
- //   @Cacheable('longTermCache')
+    @Cacheable('longTermCache')
     List getLoggerSources() {
         def url = "${grailsApplication.config.logger.baseUrl}/logger/sources"
         try {
