@@ -15,7 +15,6 @@ group "au.org.ala.plugins.grails"
 apply plugin:"eclipse"
 apply plugin:"idea"
 apply plugin:"org.grails.grails-plugin"
-apply plugin:"org.grails.grails-plugin-publish"
 apply plugin:"asset-pipeline"
 apply plugin:"org.grails.grails-gsp"
 apply plugin:"maven-publish"
@@ -87,24 +86,6 @@ tasks.withType(GroovyCompile) {
         forkOptions.jvmArgs = ['-Xmx1024m']
     }
 }
-// enable if you wish to package this plugin as a standalone application
-grailsPublish {
-    // TODO: Provide values here
-//    user = 'user'
-//    key = 'key'
-
-    githubSlug = 'AtlasOfLivingAustralia/downloads-plugin'
-    websiteUrl = 'http://github.com/AtlasOfLivingAustralia/downloads-plugin'
-    license {
-        name = 'MPL-1.1'
-    }
-    issueTrackerUrl = 'http://github.com/AtlasOfLivingAustralia/downloads-plugin/issues'
-    vcsUrl = 'http://github.com/AtlasOfLivingAustralia/downloads-plugin'
-    title = "ALA Downloads Plugin"
-    desc = "ALA Downloads Plugin"
-    developers = [:]
-}
-
 
 assets {
     packagePlugin = true
