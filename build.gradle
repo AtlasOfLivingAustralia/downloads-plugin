@@ -66,14 +66,13 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-moshi:2.2.0'
     compile 'com.squareup.moshi:moshi-adapters:1.4.0'
     compile 'org.jsoup:jsoup:1.11.3'
-
 }
 
 bootRun {
     ignoreExitValue true
     jvmArgs(
-        '-Dspring.output.ansi.enabled=always', 
-        '-noverify', 
+        '-Dspring.output.ansi.enabled=always',
+        '-noverify',
         '-XX:TieredStopAtLevel=1',
         '-Xmx1024m')
     sourceResources sourceSets.main
@@ -86,6 +85,9 @@ tasks.withType(GroovyCompile) {
         forkOptions.jvmArgs = ['-Xmx1024m']
     }
 }
+// enable if you wish to package this plugin as a standalone application
+bootJar.enabled = false
+
 
 assets {
     packagePlugin = true
@@ -122,3 +124,4 @@ publishing {
         }
     }
 }
+
