@@ -119,7 +119,7 @@
                     </g:if>
                     <div id="mydownloads">
                         <a href="${grailsApplication?.config?.doiService?.baseUrl}/myDownloads" target="_blank"><g:message
-                                code="download.confirm.myDownloadsBtn"
+                                code="download.confirm.myDownloadsLink"
                                 default="My Downloads - View a list of all your previous downloads"/></a>
                     </div>
                 </div>
