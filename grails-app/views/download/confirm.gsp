@@ -53,7 +53,9 @@
             height: 12px;
             margin-bottom: 10px;
         }
-
+        #mydownloads {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -115,6 +117,11 @@
                     <g:if test="${isQueuedDownload && json}">
                         <button class="btn btn-link btn-block margin-bottom-1" data-toggle="modal" data-target="#downloadUrlModal"><g:message code="download.confirm.rawUrlBtn" default="View the raw download URL"/></button>
                     </g:if>
+                    <div id="mydownloads">
+                        <a href="${grailsApplication?.config?.doiService?.baseUrl}/myDownloads" target="_blank"><g:message
+                                code="download.confirm.myDownloadsBtn"
+                                default="My Downloads - View a list of all your previous downloads"/></a>
+                    </div>
                 </div>
             </div>
         </div>
