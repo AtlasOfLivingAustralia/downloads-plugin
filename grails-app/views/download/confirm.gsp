@@ -48,12 +48,15 @@
         }
         textarea {
             width: 100%;
+            height: 135px;
         }
         .progress {
             height: 12px;
             margin-bottom: 10px;
         }
-
+        #mydownloads {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -118,6 +121,11 @@
                 </div>
             </div>
         </div>
+        <div id="mydownloads">
+            <a href="${grailsApplication?.config?.doiService?.baseUrl}/myDownloads" target="_blank"><g:message
+                    code="download.confirm.myDownloadsLink"
+                    default="My Downloads - View a list of all your previous downloads"/></a>
+        </div>
     </div>
 </div>
 <!-- Copy download URL modal -->
@@ -133,7 +141,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><g:message code="modal.close" default="Close"/></button>
-                <button id="copyBtn" class="btn btn-primary" data-clipboard-action="copy" data-clipboard-target="#requestUrl">Copy to clipboard</button>
+                <button id="copyBtn" class="btn btn-primary" data-clipboard-action="copy" data-clipboard-target="#requestUrl"><g:message code="download.downloadUrl.copyToClipboard" default="Copy to clipboard"/></button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
