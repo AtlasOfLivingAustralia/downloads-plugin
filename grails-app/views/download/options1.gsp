@@ -18,6 +18,7 @@
   Time: 1:53 PM
   To change this template use File | Settings | File Templates.
 --%>
+<g:set var="orgNameLong" value="${grailsApplication.config.skin.orgNameLong}"/>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -339,7 +340,7 @@
         <div class="alert alert-info alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                     aria-hidden="true">×</span></button>
-            <g:message code="download.termsofusedownload.01" />
+            <g:message code="download.termsofusedownload.01.param" args="${[orgNameLong]}" default="By downloading this content you are agreeing to use it in accordance with the {0}" />
             <a href="${grailsApplication.config.downloads.termsOfUseUrl}"><g:message code="download.termsofusedownload.02" /></a>
             <g:message code="download.termsofusedownload.03" />
         </div>
