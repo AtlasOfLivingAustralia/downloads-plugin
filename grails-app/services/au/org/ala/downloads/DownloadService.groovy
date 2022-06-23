@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat
 class DownloadService {
     def grailsApplication
     def webService   // via ala-ws-plugin
+    BiocacheService biocacheService
 
     /**
      * Records download service
