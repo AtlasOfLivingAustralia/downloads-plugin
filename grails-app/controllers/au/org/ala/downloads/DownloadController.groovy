@@ -13,6 +13,8 @@
 
 package au.org.ala.downloads
 
+import java.time.LocalDate
+
 import grails.converters.JSON
 import grails.core.GrailsApplication
 import grails.web.mapping.LinkGenerator
@@ -42,7 +44,7 @@ class DownloadController {
         log.debug "biocacheDownloadParamString = ${downloadParams.biocacheDownloadParamString()}"
         log.debug "request.getHeader('referer') = ${request.getHeader('referer')}"
         log.debug "downloadParams = ${downloadParams.toString()}"
-        downloadParams.file = DownloadType.RECORDS.type + "-" + new Date().format("yyyy-MM-dd")
+        downloadParams.file = DownloadType.RECORDS.type + "-" + LocalDate.now()
 
         boolean askForEmail = (authService?.getEmail() == null);
 

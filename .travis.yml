@@ -7,6 +7,8 @@ branches:
   - master
   - develop
   - hotfix
+  - grails4
+  - epic/grails4/develop
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
