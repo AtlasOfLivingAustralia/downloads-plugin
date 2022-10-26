@@ -9,7 +9,6 @@ buildscript {
     }
 }
 
-
 version "3.0-SNAPSHOT"
 group "au.org.ala.plugins.grails"
 
