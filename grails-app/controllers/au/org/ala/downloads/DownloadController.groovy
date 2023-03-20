@@ -135,7 +135,7 @@ class DownloadController {
                     downloadType: downloadParams.downloadType])
         } else if (downloadParams.downloadType == DownloadType.CHECKLIST.type) {
             // Checklist download
-            def extraParamsString = "&facets=species_guid&lookup=true&counts=true&lists=true"
+            def extraParamsString = "&facets=species_guid&lookup=true&count=true&lists=true"
             chain (action:'confirm', model: [
                     isQueuedDownload: false,
                     isChecklist: true,
