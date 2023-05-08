@@ -14,6 +14,7 @@
 package au.org.ala.downloads
 
 import grails.plugin.cache.Cacheable
+import org.apache.http.entity.ContentType
 import org.grails.web.util.WebUtils
 
 import java.text.SimpleDateFormat
@@ -135,7 +136,7 @@ class DownloadService {
     List getLoggerReasons() {
         def url = "${grailsApplication.config.logger.baseUrl}/logger/reasons"
         try {
-            webService.get(url).resp.findAll { !it.deprecated } // skip deprecated reason codes
+            webService.get(url, [:], ContentType.APPLICATION_JSON, false, false).resp.findAll { !it.deprecated } // skip deprecated reason codes
         } catch (Exception ex) {
             log.error "Error calling logger service: ${ex.message}", ex
         }
@@ -151,7 +152,7 @@ class DownloadService {
     List getLoggerSources() {
         def url = "${grailsApplication.config.logger.baseUrl}/logger/sources"
         try {
-            webService.get(url).resp
+            webService.get(url, [:], ContentType.APPLICATION_JSON, false, false).resp
         } catch (Exception ex) {
             log.error "Error calling logger service: ${ex.message}", ex
         }
@@ -192,7 +193,7 @@ class DownloadService {
         String requestParams = params.replaceAll("pageSize=[0-9]+|flimit=[0-9]+|facets=[a-zA-Z_]+", "") +
                 "&pageSize=0&flimit=" + (flimit?:grailsApplication.config.downloads.fieldguide.species.max) + "&facet=true&facets=species_guid"
 
-        def result = webService.get(grailsApplication.config.biocache.baseUrl + "/occurrences/search" + requestParams)
+        def result = webService.get(grailsApplication.config.biocache.baseUrl + "/occurrences/search" + requestParams, [:], ContentType.APPLICATION_JSON, false, false)
 
         def fg = [guids: [], link: "", title: ""]
 
