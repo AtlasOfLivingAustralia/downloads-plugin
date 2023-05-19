@@ -3,6 +3,7 @@ package au.org.ala.downloads
 import grails.converters.JSON
 import grails.plugin.cache.Cacheable
 import org.apache.commons.collections.CollectionUtils
+import org.apache.http.entity.ContentType
 
 import javax.annotation.PostConstruct
 
@@ -49,7 +50,7 @@ class BiocacheService {
     @Cacheable('longTermCache')
     List getBiocacheFields()  {
         List fields
-        Map resp = webService.get(grailsApplication.config.downloads.indexedFieldsUrl)
+        Map resp = webService.get(grailsApplication.config.downloads.indexedFieldsUrl, [:], ContentType.APPLICATION_JSON, false, false)
 
         if (resp?.resp) {
             fields = resp.resp
