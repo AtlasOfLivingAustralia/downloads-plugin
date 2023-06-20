@@ -13,10 +13,10 @@
 
 package au.org.ala.downloads.plugin
 
+import kotlin.text.Charsets
 import org.apache.http.client.utils.URLEncodedUtils
 import org.apache.http.NameValuePair
 
-import java.nio.charset.Charset
 
 class DownloadsTagLib {
 
@@ -27,7 +27,7 @@ class DownloadsTagLib {
     static namespace = 'downloads'
     static defaultEncodeAs = "raw"
 
-    static final UTF8_CHARSET =  Charset.lookup("UTF-8")
+    static final UTF8_CHARSET = Charsets.UTF_8
     static final SEPARATORS = "?;&".toCharArray()
 
 

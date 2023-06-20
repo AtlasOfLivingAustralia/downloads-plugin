@@ -107,15 +107,21 @@ class DownloadService {
         String url = grailsApplication.config.downloads.indexedDownloadUrl + downloadParams.biocacheDownloadParamString()
         Map resp
 
-        if (url.length() < 8000) {
-            log.debug "Doing GET on ${url}"
-            resp = webService.get(url)
-        } else {
-            // TODO send via POST
-            def msg = "Download GET requests too long (> 8000 char) -> ${url}"
-            log.error msg
-            throw new Exception(msg)
+        Map params = [:]
+        for (String term : downloadParams.biocacheDownloadParamString().split('&')) {
+            String [] kv = term.split('=')
+            if (kv.length == 2 && kv[0] && kv[1]) {
+                if (params.containsKey(kv[0])) {
+                    // delimit multiple fq statements
+                    params[kv[0]] = params[kv[0]] + "," + kv[1]
+                } else {
+                    params[kv[0]] = kv[1]
+                }
+            }
         }
+
+        log.debug "Doing POST on ${url}"
+        resp = webService.post(url, params)
 
 
         if (resp?.resp) {
@@ -184,7 +190,7 @@ class DownloadService {
 
     /**
      * Run the field guide download via POST
-     * 
+     *
      * @param params
      * @return
      */
