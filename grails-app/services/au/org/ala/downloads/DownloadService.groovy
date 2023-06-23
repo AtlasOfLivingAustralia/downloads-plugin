@@ -107,15 +107,21 @@ class DownloadService {
         String url = grailsApplication.config.downloads.indexedDownloadUrl + downloadParams.biocacheDownloadParamString()
         Map resp
 
-        if (url.length() < 8000) {
-            log.debug "Doing GET on ${url}"
-            resp = webService.get(url)
-        } else {
-            // TODO send via POST
-            def msg = "Download GET requests too long (> 8000 char) -> ${url}"
-            log.error msg
-            throw new Exception(msg)
+        Map params = [:]
+        for (String term : downloadParams.biocacheDownloadParamString().split('&')) {
+            String [] kv = term.split('=')
+            if (kv.length == 2 && kv[0] && kv[1]) {
+                if (params.containsKey(kv[0])) {
+                    // delimit multiple fq statements
+                    params[kv[0]] = params[kv[0]] + "," + kv[1]
+                } else {
+                    params[kv[0]] = kv[1]
+                }
+            }
         }
+
+        log.debug "Doing POST on ${url}"
+        resp = webService.post(url, params)
 
 
         if (resp?.resp) {
@@ -136,7 +142,7 @@ class DownloadService {
     List getLoggerReasons() {
         def url = "${grailsApplication.config.logger.baseUrl}/logger/reasons"
         try {
-            webService.get(url).resp.findAll { !it.deprecated } // skip deprecated reason codes
+            webService.get(url, [:], ContentType.APPLICATION_JSON, false, false).resp.findAll { !it.deprecated } // skip deprecated reason codes
         } catch (Exception ex) {
             log.error "Error calling logger service: ${ex.message}", ex
         }
@@ -152,7 +158,7 @@ class DownloadService {
     List getLoggerSources() {
         def url = "${grailsApplication.config.logger.baseUrl}/logger/sources"
         try {
-            webService.get(url).resp
+            webService.get(url, [:], ContentType.APPLICATION_JSON, false, false).resp
         } catch (Exception ex) {
             log.error "Error calling logger service: ${ex.message}", ex
         }
@@ -184,7 +190,7 @@ class DownloadService {
 
     /**
      * Run the field guide download via POST
-     * 
+     *
      * @param params
      * @return
      */
@@ -193,7 +199,7 @@ class DownloadService {
         String requestParams = params.replaceAll("pageSize=[0-9]+|flimit=[0-9]+|facets=[a-zA-Z_]+", "") +
                 "&pageSize=0&flimit=" + (flimit?:grailsApplication.config.downloads.fieldguide.species.max) + "&facet=true&facets=species_guid"
 
-        def result = webService.get(grailsApplication.config.biocache.baseUrl + "/occurrences/search" + requestParams)
+        def result = webService.get(grailsApplication.config.biocache.baseUrl + "/occurrences/search" + requestParams, [:], ContentType.APPLICATION_JSON, false, false)
 
         def fg = [guids: [], link: "", title: ""]
 
