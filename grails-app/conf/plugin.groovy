@@ -33,7 +33,7 @@ userdetails.baseUrl = ""
 downloads {
     customSections {
         //darwinCore = ["recordLevelTerms","occurrence","organism","materialSampleSpecimen","location","geologicalContext","identification","taxon","measurementOrFact","resourceRelationship"],
-        darwinCore = ["recordLevelTerms", "occurrence", "organism", "event", "location", "identification", "taxon", "measurementOrFact"] // "geologicalContext", "resourceRelationship"
+        darwinCore = ["recordLevelTerms", "occurrence", "organism", "event", "location", "identification", "taxon", "measurementOrFact", "geologicalContext", "resourceRelationship", "materialSample"]
         speciesTraits = ["conservationStatus", "otherTraits"]
         spatialIntersections = ["environmentalLayers", "contextualLayers"]
         misc = ["qualityAssertions","miscellaneousFields"]
@@ -44,11 +44,12 @@ downloads {
         Organism = "organism"
         Event = "event"
         Location = "location"
-        GeologicalContex = "geologicalContext"
+        GeologicalContext = "geologicalContext"
         Identification = "identification"
         Taxon = "taxon"
         MeasurementOrFact = "measurementOrFact"
         ResourceRelationship = "resourceRelationship"
+        MaterialSample = "materialSample"
     }
     groupingsFilterMap {
         // values used to link through to the index fields web page, via filter param
@@ -66,6 +67,9 @@ downloads {
         contextualLayers = "name:cl[0-9]*"
         qualityAssertions = "assertion"
         miscellaneousFields = ""
+        resourceRelationship = "classs:ResourceRelationship"
+        materialSample = "classs:MaterialSample"
+        geologicalContext = "classs:GeologicalContext"
     }
 }
 
