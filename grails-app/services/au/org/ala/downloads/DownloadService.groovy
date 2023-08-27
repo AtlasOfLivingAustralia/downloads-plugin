@@ -104,25 +104,30 @@ class DownloadService {
      * @throws Exception
      */
     Map triggerOfflineDownload(DownloadParams downloadParams) throws Exception {
-        String url = grailsApplication.config.downloads.indexedDownloadUrl + downloadParams.biocacheDownloadParamString()
+        String url = grailsApplication.config.downloads.indexedDownloadUrl
         Map resp
 
         Map params = [:]
         for (String term : downloadParams.biocacheDownloadParamString().split('&')) {
             String [] kv = term.split('=')
             if (kv.length == 2 && kv[0] && kv[1]) {
-                if (params.containsKey(kv[0])) {
+                // remove leading '?' from keys
+                kv[0] = kv[0].replaceAll('^\\?', '')
+                if (kv[0].equalsIgnoreCase('fq')) {
                     // delimit multiple fq statements
-                    params[kv[0]] = params[kv[0]] + "," + kv[1]
+                    if (params[kv[0]] instanceof List) {
+                        params[kv[0]].add(URLDecoder.decode(kv[1]))
+                    } else {
+                        params[kv[0]] = [URLDecoder.decode(kv[1])]
+                    }
                 } else {
-                    params[kv[0]] = kv[1]
+                    params[kv[0]] = URLDecoder.decode(kv[1])
                 }
             }
         }
 
         log.debug "Doing POST on ${url}"
         resp = webService.post(url, params)
-
 
         if (resp?.resp) {
             resp.resp.put("requestUrl", url)
