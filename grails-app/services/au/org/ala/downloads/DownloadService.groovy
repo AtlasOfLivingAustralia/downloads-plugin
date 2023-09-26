@@ -176,7 +176,7 @@ class DownloadService {
      * @return
      */
     def triggerFieldGuideDownload(String params) {
-        String url = grailsApplication.config.downloads.fieldguideDownloadUrl + '/generate/offline'
+        String url = grailsApplication.config.downloads.fieldguideDownloadUrl + '/generate'
 
         //detect fieldguide vs biocache-hub url. fieldguide url returns 400 when missing email parameter
         if (webService.post(url, null, [:], ContentType.APPLICATION_JSON, false, false)?.statusCode != 400) {
@@ -228,7 +228,7 @@ class DownloadService {
             fg.link = serverName + contextPath + "/occurrences/search" + requestParams.replaceAll("flimit=[0-9]+|facets=[a-zA-Z_]+","")
 
             try {
-                def response = webService.post(grailsApplication.config.downloads.fieldguideDownloadUrl + "/generate/offline" + params, fg, [:], ContentType.APPLICATION_JSON, false, false)
+                def response = webService.post(grailsApplication.config.downloads.fieldguideDownloadUrl + "/generate" + params, fg, [:], ContentType.APPLICATION_JSON, false, false)
 
                 if (response?.resp) {
                     //response data

@@ -19,7 +19,7 @@ downloads.checklistDownloadUrl = "https://biocache-ws.ala.org.au/ws/occurrences/
 
 // For online fieldguide generation use biocache-hub webservice url e.g. https://biocache.ala.org.au/occurrences/fieldguide/download
 // For offline fieldguide generation use fieldguide url e.g. https://fieldguide.ala.org.au
-downloads.fieldguideDownloadUrl = "https://fieldguide.ala.org.au"
+downloads.fieldguideDownloadUrl = "https://api.ala.org.au/fieldguide"
 
 downloads.indexedFieldsUrl = "https://biocache-ws.ala.org.au/ws/index/fields"
 
