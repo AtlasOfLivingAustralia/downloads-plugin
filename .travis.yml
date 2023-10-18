@@ -9,6 +9,7 @@ branches:
   - hotfix
   - grails4
   - /^epic\/.*\/develop$/
+  - feature/update_fieldguide_api_urls
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
