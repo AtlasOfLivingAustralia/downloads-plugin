@@ -190,6 +190,7 @@
     // doubling at each call with a limit to maxTimeout
     var maxTimeout = ${grailsApplication.config.downloads.refresh.confirm.maxTimeout} * 1000;
     var timeout = 1 * 1000;
+    var lastStatusUrl
 
     function updateStatus(json) {
         if (json.status == "inQueue" && json.statusUrl) {
@@ -227,14 +228,21 @@
     }
 
     function reloadStatus(url) {
+        lastStatusUrl = url
         setTimeout(function(){
             $.getJSON(url, function(data) {
                 timeout = Math.min(timeout * 2, maxTimeout);
                 updateStatus(data);
             }).fail(function( jqxhr, textStatus, error ) {
-                $('.lead').html("<g:message code="download.confirm.failed"/>");
-                $('.progress').hide();
-                $('#queueStatus').html("status: <code>"+textStatus+"</code><br/>message: <code>"+error+"</code>");
+                // continue if a proxy error is found
+                if (('' + error).indexOf("Proxy") >= 0) {
+                    timeout = Math.min(timeout * 2, maxTimeout);
+                    reloadStatus(lastStatusUrl)
+                } else {
+                    $('.lead').html("<g:message code="download.confirm.failed"/>");
+                    $('.progress').hide();
+                    $('#queueStatus').html("status: <code>"+textStatus+"</code><br/>message: <code>"+error+"</code>");
+                }
             });
         }, timeout);
     }
