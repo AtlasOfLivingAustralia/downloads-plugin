@@ -184,6 +184,16 @@
                                         <p class="font-xsmall">
                                             <g:message code="download.species.checklist.text"/>
                                         </p>
+
+                                        <form id="downloadFormatFormChecklist" class="form-horizontal collapse">
+                                            <div class="form-group">
+                                                <label for="file" class="control-label col-sm-4"><g:message code="download.occurrence.records.filename" /></label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="fileChecklist" name="fileChecklist" value="${filenameChecklist}"
+                                                           class="input form-control"/>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
 
                                     <div class="col-md-3">
@@ -218,6 +228,16 @@
                                         <p>
                                             <g:message code="download.species.field.guide.text"/>
                                         </p>
+
+                                        <form id="downloadFormatFormFieldguide" class="form-horizontal collapse">
+                                            <div class="form-group">
+                                                <label for="file" class="control-label col-sm-4"><g:message code="download.occurrence.records.filename" /></label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="fileFieldguide" name="fileFieldguide" value="${filenameFieldguide}"
+                                                           class="input form-control"/>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
 
                                     <div class="col-md-3">
@@ -366,6 +386,12 @@
                 if ($(link).attr('id') == "select-${au.org.ala.downloads.DownloadType.RECORDS.type}") {
                     // show type options
                     $('#downloadFormatForm').slideUp();
+                } else if ($(link).attr('id') == "select-${au.org.ala.downloads.DownloadType.CHECKLIST.type}") {
+                    // show type options
+                    $('#downloadFormatFormChecklist').slideUp();
+                } else if ($(link).attr('id') == "select-${au.org.ala.downloads.DownloadType.FIELDGUIDE.type}") {
+                    // show type options
+                    $('#downloadFormatFormFieldguide').slideUp();
                 }
             }
             else {
@@ -382,9 +408,23 @@
 
                 if ($(link).attr('id') == "select-${au.org.ala.downloads.DownloadType.RECORDS.type}") {
                     // show type options
+                    $('#downloadFormatFormChecklist').slideUp();
+                    $('#downloadFormatFormFieldguide').slideUp();
+
                     $('#downloadFormatForm').slideDown();
+                } else if ($(link).attr('id') == "select-${au.org.ala.downloads.DownloadType.CHECKLIST.type}") {
+                    $('#downloadFormatForm').slideUp();
+                    $('#downloadFormatFormFieldguide').slideUp();
+
+                    $('#downloadFormatFormChecklist').slideDown();
+                } else if ($(link).attr('id') == "select-${au.org.ala.downloads.DownloadType.FIELDGUIDE.type}") {
+                    $('#downloadFormatForm').slideUp();
+                    $('#downloadFormatFormChecklist').slideUp();
+
+                    $('#downloadFormatFormFieldguide').slideDown();
                 } else {
                     $('#downloadFormatForm').slideUp();
+                    $('#downloadFormatFormChecklist').slideUp();
                     $(askForEmail ? '#downloadEmail' : '#downloadReason').focus();
                 }
             }
@@ -423,6 +463,14 @@
             var email = askForEmail ? $('input[name=downloadEmail]').val() : "";
             var reason = $('#downloadReason').find(":selected").val();
             var file = $('#file').val();
+
+            if ($('a.select-download-type.btn-success').attr('id') == "select-${au.org.ala.downloads.DownloadType.RECORDS.type}") {
+                file = $('#file').val();
+            } else if ($('a.select-download-type.btn-success').attr('id') == "select-${au.org.ala.downloads.DownloadType.CHECKLIST.type}") {
+                file = $('#fileChecklist').val();
+            } else if ($('a.select-download-type.btn-success').attr('id') == "select-${au.org.ala.downloads.DownloadType.FIELDGUIDE.type}") {
+                file = $('#fileFieldguide').val();
+            }
 
             var hasAlert = false;
             $('#errorType').hide();
