@@ -45,6 +45,8 @@ class DownloadController {
         log.debug "request.getHeader('referer') = ${request.getHeader('referer')}"
         log.debug "downloadParams = ${downloadParams.toString()}"
         downloadParams.file = DownloadType.RECORDS.type + "-" + LocalDate.now()
+        def fileChecklist = DownloadType.CHECKLIST.type + "-" + LocalDate.now()
+        def fileFieldguide = DownloadType.FIELDGUIDE.type + "-" + LocalDate.now()
 
         boolean askForEmail = (authService?.getEmail() == null);
 
@@ -53,6 +55,8 @@ class DownloadController {
                     searchParams: downloadParams.searchParams,
                     targetUri: downloadParams.targetUri,
                     filename: downloadParams.file,
+                    filenameChecklist: fileChecklist,
+                    filenameFieldguide: fileFieldguide,
                     totalRecords: downloadParams.totalRecords,
                     askForEmail: askForEmail,
                     defaults: [ sourceTypeId: downloadParams.sourceTypeId,
