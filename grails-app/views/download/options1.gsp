@@ -371,6 +371,14 @@
 
         var askForEmail = ${askForEmail};
 
+        // when there is no downloadReason, set from the cookie
+        if ($('#downloadReason').find(":selected").val() == '') {
+            var reason = $.cookie("downloadReason");
+            if (reason !== undefined) {
+                $('#downloadReason').val(reason)
+            }
+        }
+
         // click event on download type select buttons
         $('a.select-download-type').click(function(e) {
             e.preventDefault(); // its a link so stop any regular link stuff happening
@@ -462,6 +470,9 @@
             var format = $('input[name=downloadFormat]:checked').val();
             var email = askForEmail ? $('input[name=downloadEmail]').val() : "";
             var reason = $('#downloadReason').find(":selected").val();
+            // save reason to the downloadReason cookie as string
+            $.cookie("downloadReason", reason);
+
             var file = $('#file').val();
 
             if ($('a.select-download-type.btn-success').attr('id') == "select-${au.org.ala.downloads.DownloadType.RECORDS.type}") {
