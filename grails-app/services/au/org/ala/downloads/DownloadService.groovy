@@ -184,7 +184,7 @@ class DownloadService {
         } else {
             def resp = fieldGuideRequest(params)
 
-            if (resp?.statusUrl) {
+            if (resp?.statusUrl || resp?.status) {
                 resp.put("requestUrl", url)
                 resp
             } else {
@@ -209,13 +209,14 @@ class DownloadService {
         def fg = [guids: [], link: "", title: ""]
 
         result?.resp?.facetResults?.each { fr ->
+            // exclude the facet result matching the records without a species_guid
             if (fr.fieldName == 'species_guid') {
-                fg.guids = fr.fieldResult?.label // groovy does an implicit collect
+                fg.guids = fr.fieldResult.findAll { !it.fq?.endsWith(":*") }?.label // groovy does an implicit collect
             }
         }
 
         if (fg.guids.isEmpty()) {
-            [status: "error", message: "Error: No species were found for the requested search (${params})."]
+            [status: "error", message: "No species were found for the requested search."]
         } else {
             SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM yyyy")
 
