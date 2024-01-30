@@ -150,6 +150,7 @@ class DownloadService {
             webService.get(url, [:], ContentType.APPLICATION_JSON, false, false).resp.findAll { !it.deprecated } // skip deprecated reason codes
         } catch (Exception ex) {
             log.error "Error calling logger service: ${ex.message}", ex
+            throw new Exception("Error fetching logger reasons")
         }
     }
 
@@ -166,6 +167,7 @@ class DownloadService {
             webService.get(url, [:], ContentType.APPLICATION_JSON, false, false).resp
         } catch (Exception ex) {
             log.error "Error calling logger service: ${ex.message}", ex
+            throw new Exception("Error fetching logger sources")
         }
     }
 
