@@ -22,7 +22,7 @@
 <html>
 <head>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
-    <meta name="fluidLayout" content="false"/>
+    <meta name="fluidLayout" content="true"/>
     <title><g:message code="downloads.fields.heading" default="Occurrence Record Fields"/></title>
     <asset:javascript src="downloads.js" />
     <asset:stylesheet src="downloads.css" />
@@ -116,9 +116,12 @@
                     <td>${fld.description}</td>
                     <td>${fld.downloadDescription}</td>
                     <td>
-                    <g:if test="${fld.infoUrl}">
-                        <a href="${fld.infoUrl}" target="_blank">Wiki</a>
-                    </g:if>
+                        <g:if test="${fld.info}">
+                            ${fld.info}
+                        </g:if>
+                        <g:if test="${fld.infoUrl}">
+                            <a href="${fld.infoUrl}" target="_blank">Wiki</a>
+                        </g:if>
                     </td>
                     <td>
                         <g:if test="${fld.indexed}"><span class="label label-info tooltips" title="${message(code:"downloads.fields.tooltip.indexed")}">I</span></g:if>
