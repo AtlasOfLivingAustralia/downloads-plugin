@@ -115,9 +115,6 @@
                     </div>
                     <a href="${downloadParams.targetUri}${downloadParams.searchParams}" class="btn btn-primary btn-block margin-bottom-1 font-xxsmall"
                            type="button"><g:message code="download.confirm.returnToSearch" default="Return to search results"/></a>
-                    <g:if test="${isQueuedDownload && json}">
-                        <button class="btn btn-link btn-block margin-bottom-1" data-toggle="modal" data-target="#downloadUrlModal"><g:message code="download.confirm.rawUrlBtn" default="View the raw download URL"/></button>
-                    </g:if>
                 </div>
             </div>
         </div>
@@ -128,24 +125,6 @@
         </div>
     </div>
 </div>
-<!-- Copy download URL modal -->
-<div class="modal fade" id="downloadUrlModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><g:message code="download.downloadUrl.title" default="Download URL"/> </h4>
-            </div>
-            <div class="modal-body">
-                <textarea id='requestUrl'>${json?.requestUrl}</textarea>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><g:message code="modal.close" default="Close"/></button>
-                <button id="copyBtn" class="btn btn-primary" data-clipboard-action="copy" data-clipboard-target="#requestUrl"><g:message code="download.downloadUrl.copyToClipboard" default="Copy to clipboard"/></button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 <g:javascript>
     $( document ).ready(function() {
         // raw download URL popup
