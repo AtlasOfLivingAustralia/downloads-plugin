@@ -86,7 +86,7 @@ downloads.mandatoryFields = ["recordLevelTerms","occurrence"]
 downloads.excludeFields = ""
 downloads.dwcExtraFields = "data_resource_uid" // It was "uuid" for biocache 1.9.x
 
-downloads.fieldguide.species.max = 1000
+downloads.fieldguide.species.max = 999
 downloads.maxRecords = 1000000
 downloads.staticDownloadsUrl = "https://downloads.ala.org.au"
 downloads.dwcSchemaUrl = "https://raw.githubusercontent.com/tdwg/dwc/master/xsd/tdwg_dwcterms.xsd"
