@@ -38,19 +38,6 @@ downloads {
         spatialIntersections = ["environmentalLayers", "contextualLayers"]
         misc = ["qualityAssertions","miscellaneousFields"]
     }
-    classMappings {
-        Record = "recordLevelTerms"
-        Occurrence = "occurrence"
-        Organism = "organism"
-        Event = "event"
-        Location = "location"
-        GeologicalContext = "geologicalContext"
-        Identification = "identification"
-        Taxon = "taxon"
-        MeasurementOrFact = "measurementOrFact"
-        ResourceRelationship = "resourceRelationship"
-        MaterialSample = "materialSample"
-    }
     groupingsFilterMap {
         // values used to link through to the index fields web page, via filter param
         recordLevelTerms = "classs:Record"
@@ -73,6 +60,21 @@ downloads {
     }
 }
 
+// Issue #108, Java 17 is treating "Record" as java.lang.Record so the map constructor is changed
+downloads.classMappings = [
+        "Record"              : "recordLevelTerms",
+        "Occurrence"          : "occurrence",
+        "Organism"            : "organism",
+        "Event"               : "event",
+        "Location"            : "location",
+        "GeologicalContext"   : "geologicalContext",
+        "Identification"      : "identification",
+        "Taxon"               : "taxon",
+        "MeasurementOrFact"   : "measurementOrFact",
+        "ResourceRelationship": "resourceRelationship",
+        "MaterialSample"      : "materialSample"
+]
+
 // other field mappings for classes TODO get from biocache-service
 downloads.conservationStatus = ["aust_conservation","state_conservation"]
 downloads.otherTraits = ["species_group","species_subgroup"]
@@ -86,7 +88,7 @@ downloads.mandatoryFields = ["recordLevelTerms","occurrence"]
 downloads.excludeFields = ""
 downloads.dwcExtraFields = "data_resource_uid" // It was "uuid" for biocache 1.9.x
 
-downloads.fieldguide.species.max = 1000
+downloads.fieldguide.species.max = 999
 downloads.maxRecords = 1000000
 downloads.staticDownloadsUrl = "https://downloads.ala.org.au"
 downloads.dwcSchemaUrl = "https://raw.githubusercontent.com/tdwg/dwc/master/xsd/tdwg_dwcterms.xsd"
